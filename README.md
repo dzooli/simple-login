@@ -62,7 +62,7 @@ erDiagram
     USER {
         int id
         string name
-        string e-mail
+        string email
         hash password
     }
     ROLE {
