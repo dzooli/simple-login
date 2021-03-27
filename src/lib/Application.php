@@ -6,18 +6,19 @@ use Framework\Db\DbConfiguration;
 use Framework\Session;
 use Framework\Exception\InvalidConfigurationException;
 use Framework\Exception\MissingConfigurationException;
+use Framework\Exception\NotInitializedException;
 use PDOException;
 
 class Application
 {
-        protected static Session $session;
-        protected static DbConfiguration $dbConf;
         protected static \PDO $dbConn;
+        protected static DbConfiguration $dbConf;
         protected static array $dbOptions = [
                 \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
         ];
-        protected array $params;
 
+        protected array $params;
+        protected Session $session;
         /**
          * Creates the application instance
          *
@@ -39,7 +40,6 @@ class Application
                 }
                 $this->connectToDb();
                 $this->params = $config['params'];
-                $this->session = new Session();
         }
 
         /**
@@ -67,9 +67,27 @@ class Application
                 return $this->params;
         }
 
+        public function getName(): string
+        {
+                return array_key_exists('name', $this->params) ? $this->params['name'] : 'default';
+        }
+
         public static function hasValidParam(array $config, string $paramName): bool
         {
                 return (!empty($config['params']) && ($config['params'][$paramName] ?? false));
+        }
+
+        public function setSession(Session $session): void
+        {
+                $this->session = $session;
+        }
+
+        public function getSession(): Session
+        {
+                if (!$this->session) {
+                        throw new NotInitializedException();
+                }
+                return $this->session;
         }
 
         protected function connectToDb(): void
@@ -81,5 +99,12 @@ class Application
                         self::$dbConf->getPassword(),
                         self::$dbOptions
                 );
+        }
+
+        public function __destruct()
+        {
+                if ($this->session->getStatus() == PHP_SESSION_ACTIVE) {
+                        $this->session->close();
+                }
         }
 }

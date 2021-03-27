@@ -8,9 +8,9 @@ use Framework\UserBase;
 class Myy
 {
 
-    public static Application $app;
+    public static ?Application $app;
 
-    public static UserBase $user;
+    public static ?UserBase $user;
 
     public static function init(): void
     {

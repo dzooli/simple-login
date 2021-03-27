@@ -4,10 +4,10 @@ namespace Framework;
 
 abstract class UserBase
 {
-    public function getName(): string;
-    public function getId(): int;
-    public function authenticate(): bool;
-    protected function checkPassword(): bool;
-    public function getRoles(): array;
-    public function hasRoleByName(string $roneName): bool;
+    abstract public function getName(): string;
+    abstract public function getId(): int;
+    abstract public function authenticate(): bool;
+    abstract protected function checkPassword(): bool;
+    abstract public function getRoles(): array;
+    abstract public function hasRoleByName(string $roneName): bool;
 }

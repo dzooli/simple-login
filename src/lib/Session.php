@@ -2,30 +2,32 @@
 
 namespace Framework;
 
-use Exception\NotInitializedException;
+use Framework\Exception\NotInitializedException;
+use Framework\Exception\SessionNotClosedException;
 
-class Session 
+class Session
 {
     protected string $name;
     protected string $id;
     protected int $status;
 
-    public function __construct() 
+    public function __construct()
     {
         if (session_status() === PHP_SESSION_DISABLED) {
             throw new SessionDisabledExtension();
         }
 
         $this->name = $this->id = '';
-        if (Myy::$app !== null && Myy::$app->hasValidParam('name')) {
-            session_name(Myy::$app->getParams()['name']);
+        if (Myy::$app !== null) {
+            $appName = Myy::$app->getName();
+            session_name($appName);
         } else {
             throw new NotInitializedException();
         }
 
         session_abort();
         session_reset();
-        session_id(session_create_id(Myy::$app->getParams()['name']);
+        session_id(session_create_id($appName));
         session_start();
 
         $this->id = session_id();
@@ -36,25 +38,24 @@ class Session
     public function __destruct()
     {
         session_write_close();
-        session_destroy();
     }
 
-    public function getId() : string
+    public function getId(): string
     {
         return $this->id;
     }
 
-    public function getName() : string
+    public function getName(): string
     {
         return $this->name;
     }
 
-    public function getStatus() : int
+    public function getStatus(): int
     {
         return $this->status;
     }
 
-    public function get(string $key = '') : string
+    public function get(string $key = ''): string
     {
         if (!empty($key) && array_key_exists($key, $_SESSION)) {
             return $_SESSION[$key];
@@ -62,17 +63,17 @@ class Session
         return null;
     }
 
-    public function remove(string $key) : bool
+    public function remove(string $key): bool
     {
         if (!empty($key) && array_key_exists($key, $_SESSION)) {
             unset($_SESSION[$key]);
             return array_key_exists($key, $_SESSION);
         } else {
             return false;
-        }        
+        }
     }
 
-    public function has(string $key) : bool
+    public function has(string $key): bool
     {
         if (empty($key)) {
             return false;
@@ -80,11 +81,26 @@ class Session
         return array_key_exists($key, $_SESSION);
     }
 
-    public function set(string $key, string $value) : bool
+    public function set(string $key, string $value): bool
     {
         if (!empty($key)) {
-                $_SESSION[$key] = $value;
+            $_SESSION[$key] = $value;
         }
         return $this->has($key);
+    }
+
+    public function close(): bool
+    {
+        foreach (array_keys($_SESSION) as $key) {
+            $this->remove($key);
+        }
+
+        if (session_commit()) {
+            $this->name = '';
+            $this->id = '';
+            $this->status = session_status();
+            return true;
+        }
+        throw new SessionNotClosedException();
     }
 }
