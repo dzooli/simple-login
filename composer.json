@@ -1,0 +1,22 @@
+{
+  "name": "simple-PHP-App",
+  "description": "Authenticate and login a user without common framework usage",
+  "require": {
+    "php": "^7.4",
+    "ext-pdo": "*"
+  },
+  "require-dev": {
+  },
+  "autoload": {
+    "psr-4": {
+      "Framework\\": "src/lib",
+      "Pages\\": "src/pages",
+      "App\\": "src/app"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/"
+    }
+  }
+}
