@@ -9,18 +9,18 @@ use Framework\UserBase;
 class Myy
 {
 
-    public static ?Application $app;
+    public static ?Application $app = null;
 
-    public static ?UserBase $user;
+    public static int $user_id = 0;
 
     public static function init(): void
     {
-        self::$app = self::$user = null;
+        self::$app = null;
     }
 
     public static function isGuest(): bool
     {
-        return (self::$user === null);
+        return (self::$user_id === 0);
     }
 
     public static function createApplication(?array $config): void
@@ -29,12 +29,5 @@ class Myy
         if (self::$app->isDebugging()) {
             ini_set('max_execution_time', 300);
         }
-        self::$app->setSession(new Session());
-    }
-
-    public static function shutdownApplication(): void
-    {
-        self::$app->getSession()->close();
-        self::$app = null;
     }
 }
