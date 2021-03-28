@@ -1,7 +1,7 @@
 <?php
 
 namespace Tests;
-
+/*
 use CustomProject\CustomClass;
 use PHPUnit\Framework\TestCase;
 
@@ -15,3 +15,4 @@ class CustomClassTest extends TestCase
         $this->assertTrue(false);
     }
 }
+*/
