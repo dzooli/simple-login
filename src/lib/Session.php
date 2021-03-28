@@ -4,6 +4,7 @@ namespace Framework;
 
 use Framework\Exception\NotInitializedException;
 use Framework\Exception\SessionNotClosedException;
+use Framework\Exception\SessionDisabledException;
 
 class Session
 {
@@ -14,7 +15,7 @@ class Session
     public function __construct()
     {
         if (session_status() === PHP_SESSION_DISABLED) {
-            throw new SessionDisabledExtension();
+            throw new SessionDisabledException();
         }
 
         $this->name = $this->id = '';
