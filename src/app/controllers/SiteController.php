@@ -9,6 +9,11 @@ class SiteController extends Controller
 {
     public function actionIndex(): Response
     {
-        return new Response('hello');
+        return new Response($this->renderView('index'));
+    }
+
+    public function actionStarter(): Response
+    {
+        return new Response($this->renderView('starter'));
     }
 }
