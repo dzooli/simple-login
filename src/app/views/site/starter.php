@@ -19,13 +19,14 @@
 
     <body>
 
-        <div class="w3-bar w3-blue">
-            <a class="w3-bar-item w3-button w3-mobile w3-hover-blue" href="/">Random News</a>
+        <!-- Navbar -->
+        <div class="w3-bar w3-metro-dark-blue">
+            <a class="w3-bar-item w3-button w3-mobile w3-indigo w3-hover w3-hover-indigo" href="/">Random News</a>
             <?php if (!Myy::isGuest()) : ?>
-                <span class="w3-bar-item w3-center">Hello '<?= User::findById(Myy::$user_id)->getName() ?>'</span>
-                <a class="w3-bar-item w3-button w3-round w3-red w3-hover-pink w3-mobile w3-right" href="user/logout">Logout</a>
+                <a class="w3-bar-item w3-button w3-round w3-metro-red w3-hover-dark-red w3-mobile w3-right" href="user/logout">Logout (<?= User::findById(Myy::$user_id)->getName() ?>)</a>
             <?php endif ?>
         </div>
+        <!-- Navbar end -->
 
         <div class="w3-content w3-container">
             <h1>Welcome Home!</h1>
