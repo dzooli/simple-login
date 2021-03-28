@@ -106,10 +106,10 @@ class Application
         $this->session = $session;
     }
 
-    public function getSession(): Session
+    public function getSession(): ?Session
     {
-        if (!$this->session) {
-            throw new NotInitializedException();
+        if (empty($this->session)) {
+            return null;
         }
         return $this->session;
     }
@@ -140,6 +140,12 @@ class Application
         if (!method_exists($this->controller, $actionMethodName)) {
             throw new ActionNotFoundException($actionMethodName, $this->controllerName);
         }
+
+        $this->session = new Session();
+        if ($this->session->has('user_id')) {
+            Myy::$user_id = $this->session->get('user_id');
+        }
+
         $this->response = $this->controller->$actionMethodName();
         return $this->response;
     }
@@ -176,12 +182,5 @@ class Application
     public function isDebugging(): bool
     {
         return (self::hasValidParam($this->config, 'debug') && $this->params['debug'] === true);
-    }
-
-    public function __destruct()
-    {
-        if ($this->session->getStatus() == PHP_SESSION_ACTIVE) {
-            $this->session->close();
-        }
     }
 }
