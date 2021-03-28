@@ -26,19 +26,11 @@ class Session
             throw new NotInitializedException();
         }
 
-        session_abort();
-        session_reset();
-        session_id(session_create_id($appName));
-        session_start();
+        session_start(['cookie_lifetime' => 86400]);
 
         $this->id = session_id();
         $this->name = session_name();
         $this->status = session_status();
-    }
-
-    public function __destruct()
-    {
-        session_write_close();
     }
 
     public function getId(): string
