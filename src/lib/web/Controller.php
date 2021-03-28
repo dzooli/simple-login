@@ -46,7 +46,6 @@ class Controller
                 . (!empty($params) ? '?' : '')
                 . (!empty($params) ? http_build_query($params) : '')
         );
-        $result->setRedirect();
         exit();
     }
 
