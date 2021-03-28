@@ -5,5 +5,7 @@ return [
     'params' => [
         'debug' => true,
         'name' => 'AuthTestApp1',
+        'defaultcontroller' => 'Site',
+        'defaultaction' => 'Index',
     ],
 ];
