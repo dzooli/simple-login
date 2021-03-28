@@ -18,11 +18,12 @@ For simplicity the UI is based on W3.CSS stylesheet.
 3. Install composer: `composer install`
 4. Create autoload config: `composer dumpautoload`
 5. Import DB schema and sample data: `mysql -p -u root < db/dump.sql`
-6. Change the `config/db.php` parameters if you need to use another user|db|password
+6. Copy DB config example: `cp config/db_example.php config/db.php`
+7. Change the `config/db.php` parameters if you need to use another user|db|password
 
 ## Testing
 
-Testing is not complted yet but you can enhance the whole application by adding
+Testing is not completed yet but you can enhance the whole application by adding
 new test cases to the `tests` directory.
 
 - `composer require --dev phpunit/phpunit ^7`
