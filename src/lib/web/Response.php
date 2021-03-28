@@ -5,7 +5,6 @@ namespace Framework\Web;
 class Response
 {
     protected ?string $content = '';
-    protected bool $isRedirect = false;
 
     public function __construct(?string $content = null)
     {
