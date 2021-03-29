@@ -22,7 +22,7 @@ class UserController extends Controller
         if (Myy::$app->getRequest()->isPost()) {
             $formData = Myy::$app->getRequest()->getPostParameters();
             if (empty($formData) || empty($formData['User'])) {
-                Myy::$app->getSession()->set('flash', 'warning|Please enter a valid e-mail and password below');
+                Session::setFlash('warning', 'Please enter a valid e-mail and password below');
                 $this->localRedirect($this->defaultRedirect);
                 return;
             }
@@ -30,12 +30,12 @@ class UserController extends Controller
             $mail = $formData['User']['email'];
             $userFound = User::findByEmail($mail);
             if (!$userFound) {
-                Myy::$app->getSession()->set('flash', 'danger|Invalid username or password');
+                Session::setFlash('danger', 'Invalid username or password');
                 $this->localRedirect($this->defaultRedirect);
                 return;
             }
-            if (!$userFound->authenticate($pass)) {
-                Myy::$app->getSession()->set('flash', 'danger|Invalid username or password');
+            if (!$userFound->verifyPassword($pass)) {
+                Session::setFlash('danger', 'Invalid username or password');
                 $this->localRedirect($this->defaultRedirect);
                 return;
             }
