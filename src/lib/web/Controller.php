@@ -58,6 +58,9 @@ class Controller
             throw new ViewNotFoundException($this->name, $viewFile);
         }
         ob_start();
+        if (!empty($params)) {
+            extract($params);
+        }
         require($viewFile);
         return ob_get_clean();
     }
