@@ -3,8 +3,6 @@
 namespace App\Models;
 
 use \Framework\UserBase;
-use \Framework\Db;
-use Framework\Exception\NotInitializedException;
 use \Framework\Myy;
 
 class User extends UserBase
@@ -50,7 +48,7 @@ class User extends UserBase
         return ($res instanceof UserBase) ? $res : null;
     }
 
-    public function authenticate($pass = null): bool
+    public function verifyPassword($pass = null): bool
     {
         if (!$pass || empty($this->password)) {
             return false;
