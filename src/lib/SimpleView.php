@@ -4,6 +4,26 @@ namespace Framework;
 
 class SimpleView
 {
+    public static array
+        $flashes = [
+            'danger' => [
+                'color' => 'red',
+                'title' => 'Danger!',
+            ],
+            'warning' => [
+                'color' => 'yellow',
+                'title' => 'Warning!',
+            ],
+            'success' => [
+                'color' => 'green',
+                'title' => '',
+            ],
+            'info' => [
+                'color' => 'blue',
+                'title' => 'Info',
+            ],
+        ];
+
     protected static array $replace_elements = [
         'title',
         'content',
