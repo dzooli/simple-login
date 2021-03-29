@@ -8,6 +8,25 @@ use Framework\Exception\SessionDisabledException;
 
 class Session
 {
+    public static array $flashes = [
+        'danger' => [
+            'color' => 'red',
+            'title' => 'Danger!',
+        ],
+        'warning' => [
+            'color' => 'yellow',
+            'title' => 'Warning!',
+        ],
+        'success' => [
+            'color' => 'green',
+            'title' => '',
+        ],
+        'info' => [
+            'color' => 'blue',
+            'title' => 'Info',
+        ],
+    ];
+
     protected string $name;
     protected string $sid;
     protected int $status;
@@ -93,5 +112,38 @@ class Session
             return true;
         }
         throw new SessionNotClosedException();
+    }
+
+    public static function setFlash(string $type = 'info', string $message = ''): bool
+    {
+        if (Myy::$app) {
+            $sess = Myy::$app->getSession();
+            if (empty($sess)) {
+                $sess = new Session();
+                Myy::$app->setSession($sess);
+            }
+            $sess->set('flash', $type . '|' . $message);
+            return Myy::$app->getSession()->has('flash');
+        }
+        return false;
+    }
+
+    public static function getFlash(): ?array
+    {
+        $retFlash = [];
+        if (Myy::$app && Myy::$app->getSession() && Myy::$app->getSession()->has('flash')) {
+            $flash = explode('|', Myy::$app->getSession()->get('flash'));
+            Myy::$app->getSession()->remove('flash');
+            $retFlash['color'] = self::$flashes['danger']['color'];
+            $retFlash['title'] = self::$flashes['danger']['title'];
+            $retFlash['msg'] = 'Internal error: Invalid flash message';
+            if (count($flash) === 2 && in_array($flash[0], ['danger', 'warning', 'success', 'info'])) {
+                $retFlash['msg'] = $flash[1] ?? '';
+                $retFlash['color'] = self::$flashes[$flash[0]]['color'];
+                $retFlash['title'] = self::$flashes[$flash[0]]['title'];
+            }
+            return $retFlash;
+        }
+        return null;
     }
 }
