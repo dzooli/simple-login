@@ -97,4 +97,18 @@ ENDTEMPLATE;
     {
         $this->content = $content;
     }
+
+    public static function getFlash(): ?array
+    {
+        $retFlash = [];
+        if (Myy::$app && Myy::$app->getSession() && Myy::$app->getSession()->has('flash')) {
+            $flash = explode('|', Myy::$app->getSession()->get('flash'));
+            Myy::$app->getSession()->remove('flash');
+            $retFlash['msg'] = $flash[1] ?? '';
+            $retFlash['color'] = self::$flashes[$flash[0]]['color'];
+            $retFlash['title'] = self::$flashes[$flash[0]]['title'];
+            return $retFlash;
+        }
+        return null;
+    }
 }
