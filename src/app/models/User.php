@@ -12,7 +12,7 @@ class User extends UserBase
     protected int $id = 0;
     protected string $username = '';
     protected string $email = '';
-    // protected string $password = '';
+    protected string $password = '';
     protected $create_time = 0;
     protected $last_login = 0;
     protected bool $logged_in = false;
@@ -29,8 +29,8 @@ class User extends UserBase
             return null;
         }
         parent::preCheck();
-        $db = Myy::$app->getDb();
-        $stmt = $db->prepare('SELECT * FROM `user` WHERE email=:email_address');
+        $dbconn = Myy::$app->getDb();
+        $stmt = $dbconn->prepare('SELECT * FROM `user` WHERE email=:email_address');
         $dbDone = $stmt->execute([':email_address' => $email]);
         if ($dbDone) {
             $res = $stmt->fetchObject(__CLASS__);
@@ -41,8 +41,8 @@ class User extends UserBase
     public static function findById(int $id = 0): ?UserBase
     {
         parent::preCheck();
-        $db = Myy::$app->getDb();
-        $stmt = $db->prepare('SELECT * FROM `user` WHERE id=:id');
+        $dbconn = Myy::$app->getDb();
+        $stmt = $dbconn->prepare('SELECT * FROM `user` WHERE id=:id');
         $dbDone = $stmt->execute([':id' => $id]);
         if ($dbDone) {
             $res = $stmt->fetchObject(__CLASS__);
