@@ -62,21 +62,4 @@ class Controller
         require($viewFile);
         return ob_get_clean();
     }
-
-    protected function login(?UserBase $user = null)
-    {
-        if (!empty($user) && $user->getId() > 0) {
-            if (empty(Myy::$app->getSession())) {
-                Myy::$app->setSession(new Session());
-            }
-            Myy::$app->getSession()->set('user_id', $user->getId());
-            Myy::$user_id = $user->getId();
-        }
-    }
-
-    protected function logout()
-    {
-        Myy::$app->getSession()->close();
-        Myy::$user_id = 0;
-    }
 }
