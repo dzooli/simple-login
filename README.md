@@ -47,7 +47,7 @@ php -S localhost:8080 -t web/
 ## Usage
 
 - Go to: https://localhost:8080
-- login with `admin@email.com` or `user@email.com` (password is: admin|user+Uppercase(Reverse(admin|user)))
+- login with `admin@email.com` or `user@email.com` or `guest@email.com` (password is: admin|user|guest+Uppercase(Reverse(admin|user|guest)))
 - You can see a random page according to the used account's associated role upon every new login
 
 ## Internals
