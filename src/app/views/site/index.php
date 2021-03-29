@@ -6,15 +6,7 @@
     use App\Models\User;
     use Framework\SimpleView;
 
-    $displayFlash = false;
-    if (Myy::$app->getSession() && Myy::$app->getSession()->has('flash')) {
-        $flash = explode('|', Myy::$app->getSession()->get('flash'));
-        Myy::$app->getSession()->remove('flash');
-        $flashMsg = $flash[1];
-        $flashColor = SimpleView::$flashes[$flash[0]]['color'];
-        $flashTitle = SimpleView::$flashes[$flash[0]]['title'];
-        $displayFlash = true;
-    }
+    $flash = SimpleView::getFlash();
     ?>
 
     <html lang="en">
@@ -39,11 +31,13 @@
         </div>
         <!-- Navbar end -->
 
-        <?php if ($displayFlash) : ?>
-            <div class="w3-card w3-<?= $flashColor ?> w3-display-container w3-top w3-animate-zoom">
-                <span onclick="this.parentElement.style.display='none'" class="w3-button w3-large w3-<?= $flashColor ?> w3-display-topright">×</span>
-                <!-- <h4><?= $flashTitle ?></h4> -->
-                <p><?= $flashMsg ?></p>
+        <?php if ($flash) : ?>
+            <div class="w3-card w3-<?= $flash['color'] ?> w3-display-container w3-top w3-animate-zoom">
+                <span onclick="this.parentElement.style.display='none'" class="w3-button w3-large w3-<?= $flash['color'] ?> w3-display-topright">×</span>
+                <!-- <h4><?= $flash['title'] ?></h4> -->
+                <div class="w3-container">
+                    <p><?= $flash['msg'] ?></p>
+                </div>
             </div>
         <?php endif ?>
 
