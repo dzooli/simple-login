@@ -9,7 +9,7 @@ use Framework\Exception\SessionDisabledException;
 class Session
 {
     protected string $name;
-    protected string $id;
+    protected string $sid;
     protected int $status;
 
     public function __construct()
@@ -18,24 +18,23 @@ class Session
             throw new SessionDisabledException();
         }
 
-        $this->name = $this->id = '';
-        if (Myy::$app !== null) {
-            $appName = Myy::$app->getName();
-            session_name($appName);
-        } else {
+        $this->name = $this->sid = '';
+        if (Myy::$app === null) {
             throw new NotInitializedException();
         }
 
+        $appName = Myy::$app->getName();
+        session_name($appName);
         session_start(['cookie_lifetime' => 86400]);
 
-        $this->id = session_id();
+        $this->sid = session_id();
         $this->name = session_name();
         $this->status = session_status();
     }
 
     public function getId(): string
     {
-        return $this->id;
+        return $this->sid;
     }
 
     public function getName(): string
@@ -58,12 +57,11 @@ class Session
 
     public function remove(string $key): bool
     {
-        if (!empty($key) && array_key_exists($key, $_SESSION)) {
-            unset($_SESSION[$key]);
-            return array_key_exists($key, $_SESSION);
-        } else {
+        if (empty($key) || !array_key_exists($key, $_SESSION)) {
             return false;
         }
+        unset($_SESSION[$key]);
+        return array_key_exists($key, $_SESSION);
     }
 
     public function has(string $key): bool
@@ -90,7 +88,7 @@ class Session
 
         if (session_commit()) {
             $this->name = '';
-            $this->id = '';
+            $this->sid = '';
             $this->status = session_status();
             return true;
         }

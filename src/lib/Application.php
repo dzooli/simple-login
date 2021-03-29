@@ -12,6 +12,7 @@ use Framework\Exception\MissingConfigurationException;
 use Framework\Exception\NotInitializedException;
 use Framework\Exception\ActionNotFoundException;
 use Framework\Exception\ControllerNotFoundException;
+use PDO;
 use PDOException;
 
 class Application
@@ -31,8 +32,8 @@ class Application
 
     protected array $params;
     protected array $config;
-    protected ?string $defaultControllerName = null;
-    protected ?string $defaultActionName = null;
+    protected ?string $defControllerName = null;
+    protected ?string $defActionName = null;
     protected Session $session;
     /**
      * Creates the application instance
@@ -48,19 +49,19 @@ class Application
         if (empty($config)) {
             throw new MissingConfigurationException();
         }
-        if (array_key_exists('db', $config)) {
-            self::$dbConf = new DbConfiguration($config['db']);
-        } else {
+        if (!array_key_exists('db', $config)) {
             throw new InvalidConfigurationException();
         }
+
+        self::$dbConf = new DbConfiguration($config['db']);
         $this->connectToDb();
         $this->params = $config['params'];
 
         if (self::hasValidParam($config, 'defaultcontroller')) {
-            $this->defaultControllerName = $this->params['defaultcontroller'];
+            $this->defControllerName = $this->params['defaultcontroller'];
         }
         if (self::hasValidParam($config, 'defaultaction')) {
-            $this->defaultActionName = $this->params['defaultaction'];
+            $this->defActionName = $this->params['defaultaction'];
         }
         $this->config = $config;
         $this->request = new Request();
@@ -154,7 +155,7 @@ class Application
     {
         $this->controllerName = $this->request->getControllerName();
         $newControllerName = ($this->controllerName === 'default' || empty($this->controllerName)) ?
-            ($this->defaultControllerName ?? '') : $this->controllerName;
+            ($this->defControllerName ?? '') : $this->controllerName;
         $newControllerName = ucfirst(strtolower($newControllerName));
         $this->controllerName = $newControllerName;
         if (empty($this->controllerName)) {
@@ -171,7 +172,7 @@ class Application
     {
         $this->actionName = $this->request->getActionName();
         $newActionName = ($this->actionName === 'default' || empty($this->actionName)) ?
-            ($this->defaultActionName ?? '') : $this->actionName;
+            ($this->defActionName ?? '') : $this->actionName;
         $this->actionName = $newActionName;
         if (empty($this->actionName)) {
             throw new ActionNotFoundException($this->actionName, $this->controllerName);

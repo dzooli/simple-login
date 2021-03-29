@@ -38,15 +38,16 @@ class Myy
         if (empty(self::$app)) {
             throw new NotInitializedException();
         }
-        if (!empty($user) && $user->getId() > 0) {
-            if (empty(Myy::$app->getSession())) {
-                Myy::$app->setSession(new Session());
-            }
-            Myy::$app->getSession()->set('user_id', $user->getId());
-            Myy::$user_id = $user->getId();
-        } else {
+
+        if (empty($user) || $user->getId() === 0) {
             throw new LoginAbortedException('User not passed');
         }
+
+        if (empty(Myy::$app->getSession())) {
+            Myy::$app->setSession(new Session());
+        }
+        Myy::$app->getSession()->set('user_id', $user->getId());
+        Myy::$user_id = $user->getId();
     }
 
     public static function logout()

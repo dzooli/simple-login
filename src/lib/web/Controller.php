@@ -27,22 +27,21 @@ class Controller
     {
 
         $names = explode('\\', $this->name);
-        if (!empty($names)) {
-            return $names[count($names) - 1];
-        } else {
+        if (empty($names)) {
             return '';
         }
+        return $names[count($names) - 1];
     }
 
-    public function localRedirect(?string $controller_and_action = null, ?array $params = null): void
+    public function localRedirect(?string $controllerAction = null, ?array $params = null): void
     {
-        if (empty($controller_and_action) || count(explode('/', $controller_and_action)) !== 2) {
+        if (empty($controllerAction) || count(explode('/', $controllerAction)) !== 2) {
             throw new InvalidRedirectTargetException();
         }
 
         $result = new Response();
         $result->addHeader(
-            'Location: /' . $controller_and_action
+            'Location: /' . $controllerAction
                 . (!empty($params) ? '?' : '')
                 . (!empty($params) ? http_build_query($params) : '')
         );
