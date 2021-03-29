@@ -6,4 +6,5 @@ phpunit.phar
 .vscode
 *.code-workspace
 config/db.php
+messdetector_report.html
 
