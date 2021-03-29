@@ -31,14 +31,14 @@ class UserController extends Controller
                 $this->localRedirect($this->defaultRedirectTarget);
                 return;
             }
-            $this->login($userFound);
+            Myy::login($userFound);
         }
         $this->localRedirect('site/starter');
     }
 
     public function actionLogout(): Response
     {
-        $this->logout();
+        Myy::logout();
         $this->localRedirect('site/index');
         return new Response();
     }
