@@ -7,4 +7,5 @@ phpunit.phar
 *.code-workspace
 config/db.php
 messdetector_report.html
+database_export.sql
 
