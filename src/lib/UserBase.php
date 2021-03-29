@@ -2,7 +2,9 @@
 
 namespace Framework;
 
-class UserBase
+use Framework\Model;
+
+class UserBase extends Model
 {
     protected int $id = 0;
     protected string $password = '';
@@ -26,13 +28,5 @@ class UserBase
     public function getName(): string
     {
         return $this->username;
-    }
-
-    protected static function preCheck(): ?bool
-    {
-        if (empty(Myy::$app) || empty(Myy::$app->getDb())) {
-            throw new NotInitializedException();
-        }
-        return true;
     }
 }
