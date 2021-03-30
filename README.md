@@ -54,6 +54,10 @@ php -S localhost:8080 -t web/
 
 ### Entity relations
 
+![entity-relations](relations.png)
+
+#### As a Mermaid diagram
+
 ```mermaid
 %%{init: { 'theme': 'default'}}%%
 
