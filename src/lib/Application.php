@@ -35,6 +35,7 @@ class Application
     protected ?string $defControllerName = null;
     protected ?string $defActionName = null;
     protected Session $session;
+
     /**
      * Creates the application instance
      *
@@ -131,6 +132,13 @@ class Application
         return $this->request;
     }
 
+    /**
+     * Determine the controller and the action based on the REQUEST_URI
+     * and invoke the related Controller's actionXy() method or throw and exception
+     *
+     * @return Response
+     * @throws ActionNotFoundException when the specified Controller's method is not existing.
+     */
     public function run(): Response
     {
         $this->response = new Response();
@@ -151,6 +159,16 @@ class Application
         return $this->response;
     }
 
+    /**
+     * Create the route controller
+     * 
+     * Creates the Controller based on REQUEST_URI
+     * or creates the Application's default controller if specified in the config/app.php
+     * or throw and exception if no suitable Controller has been created.
+     *
+     * @return void
+     * @throws ControllerNotFoundException
+     */
     protected function createController(): void
     {
         $this->controllerName = $this->request->getControllerName();
@@ -168,6 +186,16 @@ class Application
         $this->controller = new $controllerClassName();
     }
 
+    /**
+     * Calculate the route action
+     * 
+     * Calculates the action method's name based on the REQUEST_URI or
+     * on the default action in the config/app.php config file.
+     * Action name is 'action'+UPPERCASE_FIRST(ROUTE_ACTION) in best case.
+     *
+     * @return string
+     * @throws ActionNotFoundException
+     */
     protected function createActionMethodName(): string
     {
         $this->actionName = $this->request->getActionName();

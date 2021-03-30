@@ -2,6 +2,15 @@
 
 namespace Framework;
 
+/**
+ * Basic view object
+ * 
+ * Could be usable for advanced views. It contains a template with HTML headers 
+ * you have to specify the content.
+ * Passing the title is not implemented yet but this is a good base for advanced views.
+ * 
+ * TODO: Implement setTitle() and getTitle()
+ */
 class SimpleView
 {
     protected static array $replace_elements = [

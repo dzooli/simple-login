@@ -4,6 +4,9 @@ namespace Pages;
 
 use \Framework\SimpleView;
 
+/**
+ * General error page as a simple but complete HTML page
+ */
 class Error extends SimpleView
 {
     public function __construct(int $code, string $message)

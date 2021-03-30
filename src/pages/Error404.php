@@ -4,6 +4,9 @@ namespace Pages;
 
 use \Framework\SimpleView;
 
+/**
+ * Error page usable to display 404 errors as a complete HTML document. Simple but visible.
+ */
 class Error404 extends SimpleView
 {
     public function __construct()

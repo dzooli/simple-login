@@ -18,11 +18,21 @@ class Controller
         $this->name = get_class($this);
     }
 
+    /**
+     * Returns the class name with namespace
+     *
+     * @return string
+     */
     public function getFullName(): string
     {
         return $this->name;
     }
 
+    /**
+     * Returns the class name without namespace like __CLASS__
+     *
+     * @return string
+     */
     public function getName(): string
     {
 
