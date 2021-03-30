@@ -16,25 +16,27 @@ class UserPage extends Model
         parent::preCheck();
         $dbconn = Myy::$app->getDb();
 
-        $stmt = $dbconn->prepare('SELECT DISTINCT
-    pag.name
-FROM
-    user u
-        LEFT JOIN
-    user_has_role ur ON u.id = ur.user_id
-        LEFT JOIN
-    role rol ON ur.role_id = rol.id
-        LEFT JOIN
-    role_has_page rp ON rol.id = rp.role_id
-        LEFT JOIN
-    page pag ON rp.page_id = pag.id
-WHERE
-    u.id = :user_id;');
+        $stmt = $dbconn->prepare(
+            'SELECT DISTINCT
+                pag.name
+            FROM
+                user u
+                    LEFT JOIN
+                user_has_role ur ON u.id = ur.user_id
+                    LEFT JOIN
+                role rol ON ur.role_id = rol.id
+                    LEFT JOIN
+                role_has_page rp ON rol.id = rp.role_id
+                    LEFT JOIN
+                page pag ON rp.page_id = pag.id
+            WHERE
+                u.id = :user_id;'
+        );
 
         $dbDone = $stmt->execute([':user_id' => $id]);
         if ($dbDone) {
-            $res = $stmt->fetchAll(PDO::FETCH_COLUMN | PDO::FETCH_UNIQUE, 0);
+            $res = $stmt->fetchAll(PDO::FETCH_COLUMN);
         }
-        return (!empty($res) || is_array($res)) ? array_values($res) : null;
+        return ($res && is_array($res) && count($res) > 0 && $res[0] !== null) ? array_values($res) : null;
     }
 }

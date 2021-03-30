@@ -9,8 +9,18 @@ use Framework\Session;
 use Framework\Web\Response;
 use Framework\Web\Controller;
 
+/**
+ * Controller for the '/site/<index|starter>' routes
+ * 
+ * Called after controller and action determination by @see Application::run() 
+ */
 class SiteController extends Controller
 {
+    /**
+     * site/index handler
+     *
+     * @return Response
+     */
     public function actionIndex(): Response
     {
         if (!Myy::isGuest()) {
@@ -19,11 +29,16 @@ class SiteController extends Controller
         return new Response($this->renderView('index'));
     }
 
+    /**
+     * site/starter handler
+     *
+     * @return Response
+     */
     public function actionStarter(): Response
     {
         if (!Myy::isGuest()) {
             $pages = UserPage::findPagesFor(Myy::$user_id);
-            $nopages = empty($pages) || empty($pages[0]);
+            $nopages = empty($pages); //|| empty($pages[0]);
             if ($nopages) {
                 Session::setFlash('warning', 'No pages available for you!');
             }
