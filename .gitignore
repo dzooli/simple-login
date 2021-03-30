@@ -6,5 +6,5 @@ phpunit.phar
 .vscode
 *.code-workspace
 config/db.php
-database_export.sql
+
 
