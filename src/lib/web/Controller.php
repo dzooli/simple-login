@@ -2,11 +2,8 @@
 
 namespace Framework\Web;
 
-use Framework\Myy;
 use Framework\Exception\InvalidRedirectTargetException;
 use Framework\Exception\ViewNotFoundException;
-use Framework\Session;
-use Framework\UserBase;
 
 class Controller
 {
@@ -52,8 +49,8 @@ class Controller
         $result = new Response();
         $result->addHeader(
             'Location: /' . $controllerAction
-                . (!empty($params) ? '?' : '')
-                . (!empty($params) ? http_build_query($params) : '')
+            . (!empty($params) ? '?' : '')
+            . (!empty($params) ? http_build_query($params) : '')
         );
         exit();
     }
@@ -69,7 +66,7 @@ class Controller
         }
         ob_start();
         if (!empty($params)) {
-            extract($params);
+            extract($params, EXTR_OVERWRITE);
         }
         require($viewFile);
         return ob_get_clean();

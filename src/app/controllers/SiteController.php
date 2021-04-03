@@ -3,16 +3,17 @@
 namespace App\Controllers;
 
 use App\Models\UserPage;
-
+use Framework\Exception\InternalErrorException;
+use Framework\Exception\ViewNotFoundException;
 use Framework\Myy;
 use Framework\Session;
-use Framework\Web\Response;
 use Framework\Web\Controller;
+use Framework\Web\Response;
 
 /**
  * Controller for the '/site/<index|starter>' routes
- * 
- * Called after controller and action determination by @see Application::run() 
+ *
+ * Called after controller and action determination by @see Application::run()
  */
 class SiteController extends Controller
 {
@@ -33,6 +34,8 @@ class SiteController extends Controller
      * site/starter handler
      *
      * @return Response
+     *
+     * @throws InternalErrorException   when some internal error occured
      */
     public function actionStarter(): Response
     {
@@ -42,9 +45,23 @@ class SiteController extends Controller
             if ($nopages) {
                 Session::setFlash('warning', 'No pages available for you!');
             }
-            return new Response($this->renderView('starter', $nopages ? ['page' => ''] : ['page' => $pages[rand(0, count($pages) - 1)]]));
+            try {
+                $pageNo = random_int(0, count($pages) - 1);
+            } catch (\Exception $ex) {
+                throw new InternalErrorException('Cannot generate a valid random value');
+            }
+            try {
+                return new Response($this->renderView('starter', $nopages ? ['page' => ''] : ['page' => $pages[$pageNo]]));
+            } catch (ViewNotFoundException $ex) {
+                throw new InternalErrorException('The defined view does not exists');
+            }
         }
+
         Session::setFlash('danger', 'You are out of the basket. Please sign in first.');
-        return new Response($this->renderView('index'));
+        try {
+            return new Response($this->renderView('index'));
+        } catch (ViewNotFoundException $ex) {
+            throw new InternalErrorException('The defined view does not exists');
+        }
     }
 }

@@ -3,15 +3,13 @@
 namespace Framework;
 
 use Framework\Db\DbConfiguration;
-use Framework\Session;
-use Framework\Web\Request;
-use Framework\Web\Response;
-use Framework\Web\Controller;
-use Framework\Exception\InvalidConfigurationException;
-use Framework\Exception\MissingConfigurationException;
-use Framework\Exception\NotInitializedException;
 use Framework\Exception\ActionNotFoundException;
 use Framework\Exception\ControllerNotFoundException;
+use Framework\Exception\InvalidConfigurationException;
+use Framework\Exception\MissingConfigurationException;
+use Framework\Web\Controller;
+use Framework\Web\Request;
+use Framework\Web\Response;
 use PDO;
 use PDOException;
 
@@ -81,7 +79,7 @@ class Application
     /**
      * Get the DB connection instance
      *
-     * @return \PDO                 The currently used PDO connection instance
+     * @return PDO                 The currently used PDO connection instance
      */
     public static function getDb(): \PDO
     {
@@ -138,6 +136,7 @@ class Application
      *
      * @return Response
      * @throws ActionNotFoundException when the specified Controller's method is not existing.
+     * @throws ControllerNotFoundException when the controller does not exist
      */
     public function run(): Response
     {
