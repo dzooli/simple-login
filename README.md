@@ -23,8 +23,8 @@ For simplicity the UI is based on W3.CSS stylesheet.
 
 ## Testing
 
-Testing is not completed yet but you can enhance the whole application by adding
-new test cases to the `tests` directory.
+Testing is not completed yet, but you can enhance the whole application by adding new test cases to the `tests`
+directory.
 
 - `composer require --dev phpunit/phpunit ^7`
 - To run the tests: `./vendor/bin/phpunit tests`
