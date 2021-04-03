@@ -4,12 +4,11 @@ namespace Framework;
 
 /**
  * Basic view object
- * 
- * Could be usable for advanced views. It contains a template with HTML headers 
+ *
+ * Could be usable for advanced views. It contains a template with HTML headers
  * you have to specify the content.
  * Passing the title is not implemented yet but this is a good base for advanced views.
- * 
- * TODO: Implement setTitle() and getTitle()
+ *
  */
 class SimpleView
 {
@@ -77,13 +76,23 @@ ENDTEMPLATE;
     /**
      * Set the content element of the view.
      *
-     * The content placeholder should be replaced in the template upon @see render()
-     *
-     * @param string $content   The page content inside the <body> tags
+     * The content placeholder should be replaced in the template upon @param string $content The page content inside the <body> tags
      * @return void
+     * @see render()
+     *
      */
     public function setContent(string $content): void
     {
         $this->content = $content;
+    }
+
+    public function setTitle(string $title = ''): void
+    {
+        $this->title = $title;
+    }
+
+    public function getTitle(): string
+    {
+        return $this->title;
     }
 }
