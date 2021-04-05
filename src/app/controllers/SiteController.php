@@ -35,30 +35,35 @@ class SiteController extends Controller
      *
      * @return Response
      *
-     * @throws InternalErrorException   when some internal error occured
+     * @throws InternalErrorException   when some internal error occurred
      */
     public function actionStarter(): Response
     {
         if (!Myy::isGuest()) {
             $pages = UserPage::findPagesFor(Myy::$user_id);
-            $nopages = empty($pages); //|| empty($pages[0]);
+            $nopages = empty($pages);
+
             if ($nopages) {
                 Session::setFlash('warning', 'No pages available for you!');
             }
+
             try {
                 $pageNo = random_int(0, count($pages) - 1);
             } catch (\Exception $ex) {
                 throw new InternalErrorException('Cannot generate a valid random value');
+
             }
+
             try {
-                return new Response($this->renderView('starter', $nopages ? ['page' => ''] : ['page' => $pages[$pageNo]]));
+                return new Response($this->renderView('starter',
+                    $nopages ? ['page' => ''] : ['page' => $pages[$pageNo]]));
             } catch (ViewNotFoundException $ex) {
                 throw new InternalErrorException('The defined view does not exists');
             }
         }
 
-        Session::setFlash('danger', 'You are out of the basket. Please sign in first.');
         try {
+            Session::setFlash('danger', 'You are out of the basket. Please sign in first.');
             return new Response($this->renderView('index'));
         } catch (ViewNotFoundException $ex) {
             throw new InternalErrorException('The defined view does not exists');
