@@ -66,7 +66,7 @@ class Session
         return $this->status;
     }
 
-    public function get(string $key = ''): string
+    public function get(string $key = ''): ?string
     {
         if (!empty($key) && array_key_exists($key, $_SESSION)) {
             return $_SESSION[$key];
@@ -105,7 +105,7 @@ class Session
             $this->remove($key);
         }
 
-        if (session_commit()) {
+        if (session_write_close()) {
             $this->name = '';
             $this->sid = '';
             $this->status = session_status();
@@ -118,7 +118,7 @@ class Session
     {
         if (Myy::$app) {
             $sess = Myy::$app->getSession();
-            if (empty($sess)) {
+            if ($sess === null) {
                 $sess = new Session();
                 Myy::$app->setSession($sess);
             }
